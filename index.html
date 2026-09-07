@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>IX AI Software // Klipper Shaper Max</title>
- 
+  <title>IX AI Software // Klipper Shaper Max Suite</title>
+  
+  <!-- PODPIĘTY MANIFEST DLA GENERATORA APK / PWA -->
   <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff0055">
 
   <style>
     :root {
@@ -31,10 +33,12 @@
     .brand-title { font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; color: #fff; }
     .brand-title span { color: var(--brand); }
 
-    /* SYSTEM ZAKŁADEK / KATEGORII */
+    /* SYSTEM ZAKŁADEK */
     .tab-nav {
       display: flex; gap: 6px; overflow-x: auto; margin-bottom: 12px; padding-bottom: 4px;
+      scrollbar-width: none;
     }
+    .tab-nav::-webkit-scrollbar { display: none; }
     .tab-btn {
       background: rgba(255,255,255,0.06); border: 1px solid var(--border);
       color: var(--sub); padding: 8px 12px; border-radius: 8px; font-size: 0.75rem;
@@ -65,11 +69,11 @@
     .stat-label { font-size: 0.65rem; color: var(--sub); text-transform: uppercase; }
     .stat-val { font-size: 1.15rem; font-weight: 800; color: #fff; margin-top: 2px; }
 
-    /* PRZYCISKI */
     .btn {
       width: 100%; background: var(--accent); color: #000; border: none;
-      padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 800;
+      padding: 11px; border-radius: 8px; font-size: 0.85rem; font-weight: 800;
       cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;
+      transition: 0.15s;
     }
     .btn:active { transform: scale(0.98); }
     .btn-brand { background: var(--brand); color: #fff; }
@@ -87,18 +91,18 @@
     /* ANIMOWANE STATUSY WENTYLATORA I GŁOWICY */
     .hardware-status-row {
       display: flex; justify-content: space-around; align-items: center;
-      background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 8px;
+      background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 4px;
     }
     .hw-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
     .fan-icon {
-      width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--accent);
+      width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent);
       display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
     }
     .fan-spinning { animation: spin 0.6s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
     .nozzle-icon {
-      width: 38px; height: 38px; border-radius: 8px; border: 2px solid var(--brand);
+      width: 40px; height: 40px; border-radius: 8px; border: 2px solid var(--brand);
       display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
     }
     .nozzle-heating { animation: pulseRed 1s infinite alternate; }
@@ -109,7 +113,7 @@
     .slider-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--sub); }
     input[type="range"] {
       width: 100%; height: 6px; background: #1e293b; border-radius: 3px;
-      accent-color: var(--accent); outline: none; margin-top: 4px;
+      accent-color: var(--accent); outline: none; margin-top: 5px;
     }
 
     /* WYKRESY & POZIOMICA */
@@ -146,30 +150,30 @@
 <body>
 
   <header>
-    <div class="brand-title">IX AI <span>SOFTWARE</span> // KLIPPER SUITE</div>
+    <div class="brand-title">IX AI <span>SOFTWARE</span> // KLIPPER PRO SUITE</div>
     <span class="badge badge-offline" id="klipperBadge">OFFLINE</span>
   </header>
 
   <!-- LISTA ZAKŁADEK -->
   <div class="tab-nav">
-    <div class="tab-btn active" data-tab="tab-motion">🎛️ Terminal & Kinematyka</div>
+    <div class="tab-btn active" data-tab="tab-motion">🎛️ Kinematyka & Stół</div>
     <div class="tab-btn" data-tab="tab-shaper">📊 Input Shaper (FFT)</div>
     <div class="tab-btn" data-tab="tab-level">⚖️ Poziomica & Sejsmo</div>
     <div class="tab-btn" data-tab="tab-accel">🚀 Test Przyspieszeń</div>
-    <div class="tab-btn" data-tab="tab-audio">🔊 Akustyka Drukarki</div>
+    <div class="tab-btn" data-tab="tab-audio">🔊 Akustyka (SPL)</div>
   </div>
 
-  <!-- POŁĄCZENIE Z MOONRAKEREM (WSPÓLNE DLA WSZYSTKICH KART) -->
+  <!-- POŁĄCZENIE Z MOONRAKEREM -->
   <div class="card" style="padding: 8px 12px;">
     <div style="display: flex; gap: 6px;">
-      <input type="text" id="klipperHost" value="192.168.1.150" placeholder="IP Moonraker (np. 192.168.1.150)">
+      <input type="text" id="klipperHost" value="192.168.1.150" placeholder="IP Moonrakera (np. 192.168.1.150)">
       <button class="btn btn-sec" id="btnConnect" style="width: auto; padding: 0 14px;">POŁĄCZ</button>
     </div>
   </div>
 
-  <!-- ==================== KARTA 1: TERMINAL & KINEMATYKA ==================== -->
+  <!-- ==================== KARTA 1: KINEMATYKA & STÓŁ ==================== -->
   <div class="tab-pane active" id="tab-motion">
-    <!-- ANIMOWANY STATUS SPRZĘTOWY -->
+    <!-- ANIMOWANE STATUSY WENTYLATORA, GŁOWICY I STOŁU -->
     <div class="card">
       <div class="hardware-status-row">
         <div class="hw-item">
@@ -179,21 +183,21 @@
         </div>
         <div class="hw-item">
           <div class="nozzle-icon" id="nozzleIcon">🔥</div>
-          <span style="font-size: 0.65rem; color: var(--sub);">GŁOWICA</span>
+          <span style="font-size: 0.65rem; color: var(--sub);">HOTEND</span>
           <span style="font-size: 0.75rem; font-weight: bold; color: var(--brand);" id="hotendTempText">-- / -- °C</span>
         </div>
         <div class="hw-item">
           <div class="nozzle-icon" id="bedIcon" style="border-color: var(--gold);">🛏️</div>
-          <span style="font-size: 0.65rem; color: var(--sub);">STÓŁ</span>
+          <span style="font-size: 0.65rem; color: var(--sub);">STÓŁ (BED)</span>
           <span style="font-size: 0.75rem; font-weight: bold; color: var(--gold);" id="bedTempText">-- / -- °C</span>
         </div>
       </div>
     </div>
 
-    <!-- WIZUALIZACJA STOŁU I POZYCJI GŁOWICY 2D -->
+    <!-- WIZUALIZACJA STOŁU 2D I POZYCJI GŁOWICY -->
     <div class="card">
       <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-        <span style="color: var(--sub); font-weight: bold;">POZYCJA GŁOWICY NA STOLE (2D LIVE):</span>
+        <span style="color: var(--sub); font-weight: bold;">POZYCJA DYSZY NA STOLE (2D LIVE):</span>
         <span id="posLabel" style="color: var(--accent);">X: 0.0 | Y: 0.0 | Z: 0.0</span>
       </div>
       <div class="bed-visualizer-container">
@@ -201,31 +205,31 @@
       </div>
     </div>
 
-    <!-- SUWAKI STEROWANIA OSIAMI (PROPORTIONAL JOG SLIDERS) -->
+    <!-- SUWAKI KONTROLI POZYCJI OSI -->
     <div class="card">
-      <div style="font-size: 0.8rem; font-weight: bold; color: var(--accent); margin-bottom: 6px;">SUWAKI POZYCJI OSI:</div>
+      <div style="font-size: 0.8rem; font-weight: bold; color: var(--accent); margin-bottom: 6px;">SUWAKI STEROWANIA POZYCJĄ:</div>
       
       <div class="slider-row">
-        <div class="slider-header"><span>OŚ X</span><span id="valSliderX">110 mm</span></div>
+        <div class="slider-header"><span>OŚ X (Karetka)</span><span id="valSliderX">110 mm</span></div>
         <input type="range" id="sliderX" min="0" max="235" value="110">
       </div>
       <div class="slider-row">
-        <div class="slider-header"><span>OŚ Y</span><span id="valSliderY">110 mm</span></div>
+        <div class="slider-header"><span>OŚ Y (Stół)</span><span id="valSliderY">110 mm</span></div>
         <input type="range" id="sliderY" min="0" max="235" value="110">
       </div>
       <div class="slider-row">
-        <div class="slider-header"><span>OŚ Z</span><span id="valSliderZ">10 mm</span></div>
+        <div class="slider-header"><span>OŚ Z (Wysokość)</span><span id="valSliderZ">10 mm</span></div>
         <input type="range" id="sliderZ" min="0" max="250" value="10">
       </div>
 
       <div class="grid-3" style="margin-top: 10px;">
-        <button class="btn btn-sec" onclick="sendGcode('G28')">🏠 HOME ALL</button>
+        <button class="btn btn-sec" onclick="sendGcode('G28')">🏠 G28 ALL</button>
         <button class="btn btn-sec" onclick="sendGcode('G92 E0\nG1 E10 F300')">⚡ EKSTRUZJA +10</button>
         <button class="btn btn-sec" onclick="sendGcode('G92 E0\nG1 E-10 F1800')">↩ RETRAKCJA -10</button>
       </div>
 
       <div style="display: flex; gap: 6px; margin-top: 8px;">
-        <button class="btn btn-danger" onclick="sendGcode('M112')">🛑 EMERGENCY STOP (M112)</button>
+        <button class="btn btn-danger" onclick="triggerM112()">🛑 EMERGENCY STOP (M112)</button>
         <button class="btn btn-sec" onclick="sendGcode('FIRMWARE_RESTART')" style="width: 35%;">RESTART</button>
       </div>
     </div>
@@ -235,36 +239,37 @@
   <div class="tab-pane" id="tab-shaper">
     <div class="card" style="border-left: 4px solid var(--brand);">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.8rem; font-weight: bold; color: var(--brand);">WIDMO REZONANSU (FFT S23 ULTRA)</span>
+        <span style="font-size: 0.8rem; font-weight: bold; color: var(--brand);">WIDMO REZONANSU (FFT WIRTUALNY ADXL345)</span>
         <button class="btn btn-sec" id="btnSwitchAxis" style="width: auto; padding: 4px 8px; font-size: 0.7rem;">OŚ: X (TOOLHEAD)</button>
       </div>
       <canvas id="fftCanvas" class="graph-canvas"></canvas>
       <div class="grid-2" style="margin-top: 8px;">
         <div class="stat-box">
-          <div class="stat-label">Główny rezonans (Peak)</div>
+          <div class="stat-label">Częstotliwość rezonansu (Peak)</div>
           <div class="stat-val" id="valPeakHz" style="color: var(--accent);">0.0 Hz</div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">Siła drgań chwilowa</div>
+          <div class="stat-label">Wibracja chwilowa</div>
           <div class="stat-val" id="valImpactG" style="color: var(--brand);">0.00 G</div>
         </div>
       </div>
       <div class="grid-2" style="margin-top: 8px;">
-        <button class="btn btn-brand" id="btnToggleSampling">● ROZPOCZNIJ POMIAR</button>
+        <button class="btn btn-brand" id="btnToggleSampling">● ROZPOCZNIJ PRÓBKOWANIE</button>
         <button class="btn btn-sec" id="btnApplyKlipperConfig" style="background: var(--green); color: #000; font-weight: bold;">ZAPISZ DO PRINTER.CFG</button>
       </div>
       <div style="margin-top: 10px;">
         <table class="shaper-table">
           <thead><tr><th>FILTR</th><th>FREQ</th><th>MAX ACCEL</th><th>REDUKCJA</th></tr></thead>
-          <tbody id="shaperTableBody"><tr><td colspan="4" style="color: var(--sub);">Uruchom próbkowanie i wykonaj ruch silnikami.</td></tr></tbody>
+          <tbody id="shaperTableBody"><tr><td colspan="4" style="color: var(--sub);">Włącz próbkowanie i wykonaj drgania silnikami.</td></tr></tbody>
         </table>
       </div>
+      <button class="btn btn-sec" id="btnExportShaperCSV" style="margin-top: 8px;">EKSPORTUJ DANE DO PLIKU CSV</button>
     </div>
   </div>
 
   <!-- ==================== KARTA 3: POZIOMICA & SEJSMOGRAF ==================== -->
   <div class="tab-pane" id="tab-level">
-    <!-- POZIOMICA ELEKTRONICZNA DLA STOŁU -->
+    <!-- POZIOMICA ELEKTRONICZNA -->
     <div class="card" style="border-left: 4px solid var(--green);">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <span style="font-size: 0.8rem; font-weight: bold; color: var(--green);">CYFROWA POZIOMICA STOŁU (2D BUBBLE LEVEL)</span>
@@ -277,15 +282,15 @@
         <div id="bubblePoint"></div>
       </div>
       <div class="grid-2" style="text-align: center;">
-        <div class="stat-box"><div class="stat-label">Pochelie Pitch (Oś X)</div><div class="stat-val" id="valPitch">0.0°</div></div>
+        <div class="stat-box"><div class="stat-label">Pochylenie Pitch (Oś X)</div><div class="stat-val" id="valPitch">0.0°</div></div>
         <div class="stat-box"><div class="stat-label">Przechył Roll (Oś Y)</div><div class="stat-val" id="valRoll">0.0°</div></div>
       </div>
     </div>
 
     <!-- SEJSMOGRAF DRGAŃ RAMY -->
-    <div class="card" style="border-left: 4px solid var(--seismo);">
+    <div class="card" style="border-left: 4px solid var(--brand);">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.8rem; font-weight: bold; color: var(--seismo);">SEJSMOGRAF DRGAŃ RAMY W CZASIE RZECZYWISTYM</span>
+        <span style="font-size: 0.8rem; font-weight: bold; color: var(--brand);">SEJSMOGRAF DRGAŃ RAMY (CZAS RZECZYWISTY)</span>
         <span id="seismoStatusText" style="font-size: 0.75rem; color: var(--green); font-weight: bold;">STABILNIE</span>
       </div>
       <canvas id="seismoCanvas" class="graph-canvas"></canvas>
@@ -297,7 +302,7 @@
     <div class="card" style="border-left: 4px solid var(--gold);">
       <div style="font-size: 0.8rem; font-weight: bold; color: var(--gold); margin-bottom: 6px;">TEST LIMITÓW PRZYSPIESZEŃ (ACCEL STRESS TEST)</div>
       <p style="font-size: 0.75rem; color: var(--sub); line-height: 1.4;">
-        Procedura wykonuje powtarzalne szybkie ruchy karetką i stołem ze stopniowo rosnącym przyspieszeniem ($M204$). Obserwuj czy sejsmograf nie rejestruje gubienia kroków.
+        Wykonuje szybkie ruchy nawrotne przy rosnącym przyspieszeniu ($M204$). Obserwuj poziom drgań na sejsmografie.
       </p>
       <div class="slider-row" style="margin-top: 10px;">
         <div class="slider-header"><span>Docelowe przyspieszenie testowe</span><span id="valTargetAccel">3000 mm/s²</span></div>
@@ -310,17 +315,25 @@
     </div>
   </div>
 
-  <!-- ==================== KARTA 5: AKUSTYKA DRUKARKI ==================== -->
+  <!-- ==================== KARTA 5: AKUSTYKA (SPL) ==================== -->
   <div class="tab-pane" id="tab-audio">
     <div class="card" style="border-left: 4px solid var(--accent);">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.8rem; font-weight: bold; color: var(--accent);">DETEKCJA STUKÓW I SZUMU SILNIKÓW (SPL)</span>
+        <span style="font-size: 0.8rem; font-weight: bold; color: var(--accent);">DETEKCJA STUKÓW I GUBIENIA KROKÓW (SPL)</span>
         <button class="btn btn-sec" id="btnStartAudio" style="width: auto; padding: 4px 10px; font-size: 0.75rem;">Mikrofon</button>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px;">
         <span style="font-size: 2.2rem; font-weight: 900; color: var(--gold);" id="valDb">-- dB</span>
-        <span id="audioAlert" style="font-size: 0.8rem; color: var(--sub);">Czeka na start</span>
+        <span id="audioAlert" style="font-size: 0.8rem; color: var(--sub);">Czeka na aktywację</span>
       </div>
+    </div>
+  </div>
+
+  <!-- KONSOLA G-CODE (NA STAŁE NA DOLE) -->
+  <div class="card">
+    <div style="display: flex; gap: 6px;">
+      <input type="text" id="inputGcode" placeholder="Wpisz komendę G-Code (np. G28, M104 S200)...">
+      <button class="btn btn-sec" id="btnSendGcode" style="width: auto; padding: 0 16px;">WYŚLIJ</button>
     </div>
   </div>
 
@@ -363,6 +376,7 @@
     const btnSwitchAxis = document.getElementById('btnSwitchAxis');
     const btnToggleSampling = document.getElementById('btnToggleSampling');
     const btnApplyKlipperConfig = document.getElementById('btnApplyKlipperConfig');
+    const btnExportShaperCSV = document.getElementById('btnExportShaperCSV');
 
     const bubblePoint = document.getElementById('bubblePoint');
     const valPitch = document.getElementById('valPitch');
@@ -385,10 +399,31 @@
     let activeAxis = 'X';
     let isSampling = false;
     let accelBuffer = [];
+    let recordedCsvSamples = [];
     let detectedPeakHz = 0;
     let pitchOffset = 0, rollOffset = 0;
 
-    // 2. MOONRAKER TELEMETRIA & SYNCHRONIZACJA
+    // 2. TRANSMISJA G-CODE & MOONRAKER TELEMETRIA
+    async function sendGcode(cmd) {
+      if (!host) return alert("Wpisz IP Klippera!");
+      try {
+        await fetch(`http://${host}/printer/gcode/script?script=${encodeURIComponent(cmd)}`, { method: 'POST' });
+      } catch (e) {}
+    }
+
+    function triggerM112() {
+      if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+      sendGcode('M112');
+    }
+
+    document.getElementById('btnSendGcode').addEventListener('click', () => {
+      const el = document.getElementById('inputGcode');
+      if (el.value.trim()) {
+        sendGcode(el.value.trim());
+        el.value = '';
+      }
+    });
+
     async function syncKlipper() {
       host = klipperHost.value.trim().replace(/^https?:\/\//, '');
       localStorage.setItem('ix_klipper_host', host);
@@ -401,7 +436,7 @@
           klipperBadge.className = "badge badge-online";
           const st = d.result.status;
 
-          // Temperatury i animacje
+          // Temperatury i animacja głowicy
           if (st.extruder) {
             hotendTempText.innerText = `${st.extruder.temperature.toFixed(1)} / ${st.extruder.target.toFixed(0)} °C`;
             if (st.extruder.target > 0 && st.extruder.temperature < st.extruder.target - 2) {
@@ -447,13 +482,6 @@
       setInterval(syncKlipper, 2000);
     });
 
-    async function sendGcode(cmd) {
-      if (!host) return alert("Wpisz IP Klippera!");
-      try {
-        await fetch(`http://${host}/printer/gcode/script?script=${encodeURIComponent(cmd)}`, { method: 'POST' });
-      } catch (e) {}
-    }
-
     // 3. WIZUALIZACJA STOŁU 2D
     function drawBedVisualizer() {
       bedCanvas.width = bedCanvas.clientWidth;
@@ -472,9 +500,8 @@
         bedCtx.beginPath(); bedCtx.moveTo(0, i); bedCtx.lineTo(w, i); bedCtx.stroke();
       }
 
-      // Pozycja głowicy
       const posX = (headPos.x / bedSizeX) * w;
-      const posY = h - (headPos.y / bedSizeY) * h; // Odwrócenie osi Y dla układu współrzędnych
+      const posY = h - (headPos.y / bedSizeY) * h;
 
       // Linie celownika
       bedCtx.strokeStyle = "rgba(0, 240, 255, 0.4)";
@@ -482,7 +509,7 @@
       bedCtx.beginPath(); bedCtx.moveTo(posX, 0); bedCtx.lineTo(posX, h); bedCtx.stroke();
       bedCtx.beginPath(); bedCtx.moveTo(0, posY); bedCtx.lineTo(w, posY); bedCtx.stroke();
 
-      // Głowica (dioda)
+      // Dioda dyszy
       bedCtx.fillStyle = "#ff0055";
       bedCtx.shadowColor = "#ff0055";
       bedCtx.shadowBlur = 10;
@@ -492,7 +519,7 @@
       bedCtx.shadowBlur = 0;
     }
 
-    // 4. SUWAKI OSI KLIPPERA
+    // 4. SUWAKI OSI
     sliderX.addEventListener('input', () => {
       valSliderX.innerText = `${sliderX.value} mm`;
       sendGcode(`G90\nG1 X${sliderX.value} F4000`);
@@ -506,7 +533,7 @@
       sendGcode(`G90\nG1 Z${sliderZ.value} F600`);
     });
 
-    // 5. INPUT SHAPER FFT & WIDMO
+    // 5. INPUT SHAPER (WIRTUALNY ADXL345 & FFT)
     btnSwitchAxis.addEventListener('click', () => {
       activeAxis = activeAxis === 'X' ? 'Y' : 'X';
       btnSwitchAxis.innerText = `OŚ: ${activeAxis} (${activeAxis === 'X' ? 'TOOLHEAD' : 'BED'})`;
@@ -523,10 +550,12 @@
         valImpactG.innerText = `${g} G`;
         updateSeismograph(total);
 
-        // Input Shaper
+        // Input Shaper Próbkowanie
         if (isSampling) {
           const val = activeAxis === 'X' ? (a.x || 0) : (a.y || 0);
           accelBuffer.push(val);
+          recordedCsvSamples.push({ t: performance.now() / 1000, acc: val });
+
           if (accelBuffer.length >= 256) {
             calcFFT();
             accelBuffer.shift();
@@ -534,7 +563,7 @@
         }
       });
 
-      // Poziomica (Orientation)
+      // Poziomica stołu
       window.addEventListener('deviceorientation', (e) => {
         const p = (e.beta || 0) - pitchOffset;
         const r = (e.gamma || 0) - rollOffset;
@@ -576,7 +605,6 @@
       valPeakHz.innerText = `${detectedPeakHz} Hz`;
       drawSpectrum(spec);
 
-      // Tablica shapera
       shaperTableBody.innerHTML = `
         <tr class="best"><td>MZV ★</td><td>${detectedPeakHz} Hz</td><td>≤ ${Math.round(detectedPeakHz * 135)} mm/s²</td><td>94%</td></tr>
         <tr><td>EI</td><td>${(detectedPeakHz * 1.15).toFixed(1)} Hz</td><td>≤ ${Math.round(detectedPeakHz * 160)} mm/s²</td><td>96%</td></tr>
@@ -602,19 +630,42 @@
 
     btnToggleSampling.addEventListener('click', () => {
       isSampling = !isSampling;
-      btnToggleSampling.innerText = isSampling ? "■ ZATRZYMAJ POMIAR" : "● ROZPOCZNIJ POMIAR";
-      btnToggleSampling.style.background = isSampling ? "#fff" : "var(--brand)";
-      btnToggleSampling.style.color = isSampling ? "#000" : "#fff";
+      if (isSampling) {
+        accelBuffer = [];
+        recordedCsvSamples = [];
+        btnToggleSampling.innerText = "■ ZATRZYMAJ POMIAR";
+        btnToggleSampling.style.background = "#fff";
+        btnToggleSampling.style.color = "#000";
+      } else {
+        btnToggleSampling.innerText = "● ROZPOCZNIJ POMIAR";
+        btnToggleSampling.style.background = "var(--brand)";
+        btnToggleSampling.style.color = "#fff";
+      }
     });
 
     btnApplyKlipperConfig.addEventListener('click', () => {
       if (detectedPeakHz > 0) {
         sendGcode(`SET_INPUT_SHAPER SHAPER_TYPE_${activeAxis}=mzv SHAPER_FREQ_${activeAxis}=${detectedPeakHz}`);
-        alert(`Wysłano: SET_INPUT_SHAPER SHAPER_TYPE_${activeAxis}=mzv SHAPER_FREQ_${activeAxis}=${detectedPeakHz}`);
+        alert(`Zastosowano konfigurację:\nSET_INPUT_SHAPER SHAPER_TYPE_${activeAxis}=mzv SHAPER_FREQ_${activeAxis}=${detectedPeakHz}`);
       }
     });
 
-    // 6. SEJSMOGRAF
+    btnExportShaperCSV.addEventListener('click', () => {
+      if (recordedCsvSamples.length === 0) return alert("Brak próbek do zapisu!");
+      let csv = "time,accel_x,accel_y\n";
+      recordedCsvSamples.forEach(s => {
+        csv += `${s.t.toFixed(4)},${s.acc.toFixed(4)},0.0\n`;
+      });
+      const uri = encodeURI("data:text/csv;charset=utf-8," + csv);
+      const a = document.createElement('a');
+      a.setAttribute("href", uri);
+      a.setAttribute("download", `resonances_${activeAxis.toLowerCase()}_klipper_suite.csv`);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    // 6. SEJSMOGRAF RAMY
     const seismoBuf = new Array(100).fill(25);
     function updateSeismograph(total) {
       seismoBuf.push(Math.min(70, Math.max(4, 25 - (total - 9.81) * 4)));
@@ -641,12 +692,12 @@
     });
     btnRunAccelTest.addEventListener('click', () => {
       const a = sliderAccel.value;
-      const gcode = `M204 S${a}\nG91\nG1 X50 F8000\nG1 X-50 F8000\nG1 X50 F8000\nG1 X-50 F8000\nG90`;
+      const gcode = `M204 S${a}\nG91\nG1 X60 F9000\nG1 X-60 F9000\nG1 X60 F9000\nG1 X-60 F9000\nG90`;
       sendGcode(gcode);
       alert(`Wysłano sekwencję testową przy przyspieszeniu ${a} mm/s²!`);
     });
 
-    // 8. AKUSTYKA (MIKROFON)
+    // 8. AKUSTYKA (MIKROFON SPL)
     document.getElementById('btnStartAudio').addEventListener('click', async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -664,11 +715,13 @@
           for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
           const db = Math.round(20 * Math.log10(Math.sqrt(sum / buf.length) || 1) + 24);
           valDb.innerText = `${db} dB`;
-          audioAlert.innerText = db > 85 ? "⚠️ Podejrzany stuk!" : "Praca silników w normie";
+          audioAlert.innerText = db > 85 ? "⚠️ Podejrzany stuk / wibracja!" : "Praca silników w normie";
           requestAnimationFrame(pollNoise);
         }
         pollNoise();
-      } catch (e) {}
+      } catch (e) {
+        alert("Błąd mikrofonu: " + e.message);
+      }
     });
 
     setupIMU();
