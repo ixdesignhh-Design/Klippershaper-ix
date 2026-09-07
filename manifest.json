@@ -1,0 +1,24 @@
+{
+  "name": "IX Klipper Shaper Pro",
+  "short_name": "IX Shaper",
+  "description": "Profesjonalny terminal Klippera, wirtualny ADXL345 z silnikiem FFT i poziomica stołu.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#ff0055",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
